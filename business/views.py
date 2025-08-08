@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.filters import SearchFilter
 
 class BusinessViewSet(viewsets.ModelViewSet):
-    queryset = Business.objects.all()
+    queryset = Business.objects.all().order_by('name')
     serializer_class = BusinessSerializer
     pagination_class = PageNumberPagination
     filter_backends = [SearchFilter]
@@ -26,13 +26,13 @@ class BusinessViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(province_id=province_id)
         return queryset
 
-    def get_serializer_class(self):
-        category_id = self.request.query_params.get('category')
-        province_id = self.request.query_params.get('province')
+    # def get_serializer_class(self):
+    #     category_id = self.request.query_params.get('category')
+    #     province_id = self.request.query_params.get('province')
 
-        if category_id or province_id:
-            return BusinessCategorySerializer  
-        return BusinessSerializer 
+    #     if category_id or province_id:
+    #         return BusinessCategorySerializer  
+    #     return BusinessSerializer 
     
     @action(detail=False, methods=['get'], url_path='featured')
     def featured_businesses(self, request):
